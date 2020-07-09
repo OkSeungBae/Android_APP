@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.inforpet"
-        minSdkVersion 29
+        minSdkVersion 26
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
