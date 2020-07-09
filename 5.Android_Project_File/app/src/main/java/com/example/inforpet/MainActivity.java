@@ -8,11 +8,15 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import net.daum.android.map.coord.MapCoord;
+import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -47,13 +51,42 @@ public class MainActivity extends AppCompatActivity {
         Log.i("geoCode", "x :: " + gwsPt.x +" y :: " + gwsPt.y);
 
         marker = new MapPOIItem();
-        marker.setItemName("Default Marker");
+        marker.setItemName("퍼피앤피플");
         marker.setTag(0);
         marker.setMapPoint(MapPoint.mapPointWithGeoCoord(gwsPt.y, gwsPt.x));      //      mapPointWithGeoCoord
         marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
 
+        mapView.setCalloutBalloonAdapter(new CustomCalloutBalloonAdapter());
         mapView.addPOIItem(marker);
 
+
     }
+
+
+    //카카오 지도 위 MapPOIItem에 커스텀 말풍선 interface를 implement받은 class이다.
+    class CustomCalloutBalloonAdapter implements CalloutBalloonAdapter
+    {
+
+        private final View mCalloutBalloon;
+
+        public CustomCalloutBalloonAdapter()
+        {
+            mCalloutBalloon = getLayoutInflater().inflate(R.layout.custom_callout_balloon, null);
+        }
+
+        @Override
+        public View getCalloutBalloon(MapPOIItem mapPOIItem) {
+
+            ((TextView)mCalloutBalloon.findViewById(R.id.textViewTitle)).setText(mapPOIItem.getItemName());
+            ((TextView)mCalloutBalloon.findViewById(R.id.textViewTel)).setText(mapPOIItem.getItemName());
+            return mCalloutBalloon;
+        }
+
+        @Override
+        public View getPressedCalloutBalloon(MapPOIItem mapPOIItem) {
+            return null;
+        }
+    }
+
 }
