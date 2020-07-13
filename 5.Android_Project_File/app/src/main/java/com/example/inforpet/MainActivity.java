@@ -2,6 +2,7 @@ package com.example.inforpet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import net.daum.android.map.coord.MapCoord;
@@ -30,7 +32,7 @@ import java.util.Map;
 import kr.hyosang.coordinate.CoordPoint;
 import kr.hyosang.coordinate.TransCoord;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MapView.POIItemEventListener {
 
     MapView mapView;
     MapPOIItem marker;
@@ -57,10 +59,9 @@ public class MainActivity extends AppCompatActivity {
         marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
 
-        mapView.setCalloutBalloonAdapter(new CustomCalloutBalloonAdapter());
+        //mapView.setCalloutBalloonAdapter(new CustomCalloutBalloonAdapter());
         mapView.addPOIItem(marker);
-
-
+        mapView.setPOIItemEventListener(this);
     }
 
 
@@ -78,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View getCalloutBalloon(MapPOIItem mapPOIItem) {
 
-            ((TextView)mCalloutBalloon.findViewById(R.id.textViewTitle)).setText(mapPOIItem.getItemName());
-            ((TextView)mCalloutBalloon.findViewById(R.id.textViewTel)).setText(mapPOIItem.getItemName());
+            //((TextView)mCalloutBalloon.findViewById(R.id.textViewTitle)).setText(mapPOIItem.getItemName());
+            //((TextView)mCalloutBalloon.findViewById(R.id.textViewTel)).setText(mapPOIItem.getItemName());
             return mCalloutBalloon;
         }
 
@@ -87,6 +88,35 @@ public class MainActivity extends AppCompatActivity {
         public View getPressedCalloutBalloon(MapPOIItem mapPOIItem) {
             return null;
         }
+    }
+
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+        //마커 클릭 이벤트
+        Toast.makeText(MainActivity.this, "onPOIItemSelected", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+        //말풍선 클릭 이벤트
+        //activity_review.xml을 띄우기
+        //넘겨줄 정보
+        //1. 선택된 업체 ID값
+
+        Intent reviewIntent = new Intent(this, ReviewActivity.class);
+        reviewIntent.putExtra("id","id");
+        startActivity(reviewIntent);
+        Toast.makeText(MainActivity.this, "onCalloutBalloonOfPOIItemTouched", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+        Toast.makeText(MainActivity.this, "onCalloutBalloonOfPOIItemTouched", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+        Toast.makeText(MainActivity.this, "onDraggablePOIItemMoved", Toast.LENGTH_SHORT).show();
     }
 
 }
