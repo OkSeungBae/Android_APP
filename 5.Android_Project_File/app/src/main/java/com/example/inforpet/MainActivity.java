@@ -118,5 +118,4 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
         Toast.makeText(MainActivity.this, "onDraggablePOIItemMoved", Toast.LENGTH_SHORT).show();
     }
-
 }
