@@ -1,0 +1,5 @@
+요청 URL
+http://www.localdata.go.kr/platform/rest/GR0/openDataApi?authKey=z5x=g6BiqWf0sRJ7S2ZyvpSYDrFVApiRf5Tzotpj1/g=
+
+인증키 : 
+z5x=g6BiqWf0sRJ7S2ZyvpSYDrFVApiRf5Tzotpj1/g=
