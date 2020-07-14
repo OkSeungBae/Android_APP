@@ -42,6 +42,20 @@ import kr.hyosang.coordinate.TransCoord;
 
 public class MainActivity extends AppCompatActivity implements MapView.POIItemEventListener {
 
+    final int STEP_NONE = 0;
+    final int STEP_opnSvcId = 1;
+    final int STEP_opnSfTeamCode = 2;
+    final int STEP_mgtNo = 3;
+    final int STEP_trdStateGbn = 4;
+    final int STEP_siteTel = 5;
+    final int STEP_siteWhlAddr = 6;
+    final int STEP_rdnWhlAddr = 7;
+    final int STEP_bplcNm = 8;
+    final int STEP_x = 9;
+    final int STEP_y = 10;
+
+
+
     public static final String TAG = "InforPet";
 
     MapView mapView;
@@ -57,21 +71,21 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         ViewGroup mapViewContainer = (ViewGroup)findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
 
+        initMap();
 
-        /*marker = new MapPOIItem();
-        marker.setItemName("퍼피앤피플");
-        marker.setTag(0);
-        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(gwsPt.y, gwsPt.x));      //      mapPointWithGeoCoord
-        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);*/
-
-        //mapView.setCalloutBalloonAdapter(new CustomCalloutBalloonAdapter());
-        //mapView.addPOIItem(marker);
+        //xml콜 코드
+        xmlCall(R.raw.testdata);
         mapView.setPOIItemEventListener(this);
-
-        xml_Parse();
     }
 
+    public void initMap()
+    {
+        //맵 중심점 변경 ( 3d혁신센터)
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(35.877266, 128.735755), true);
+
+        //줌 레벨 변경
+        mapView.setZoomLevel(6, true);
+    }
     /*
     //카카오 지도 위 MapPOIItem에 커스텀 말풍선 interface를 implement받은 class이다.
     class CustomCalloutBalloonAdapter implements CalloutBalloonAdapter
@@ -99,36 +113,8 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
     }
     */
 
-    @Override
-    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
-        //마커 클릭 이벤트
-        Toast.makeText(MainActivity.this, "onPOIItemSelected", Toast.LENGTH_SHORT).show();
-    }
+    private void xmlCall(int xmlFileId) {
 
-    @Override
-    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
-        //말풍선 클릭 이벤트
-        //activity_review.xml을 띄우기
-        //넘겨줄 정보
-        //1. 선택된 업체 ID값
-
-        Intent reviewIntent = new Intent(this, ReviewActivity.class);
-        reviewIntent.putExtra("id","id");
-        startActivity(reviewIntent);
-        Toast.makeText(MainActivity.this, "onCalloutBalloonOfPOIItemTouched", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
-        Toast.makeText(MainActivity.this, "onCalloutBalloonOfPOIItemTouched", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
-        Toast.makeText(MainActivity.this, "onDraggablePOIItemMoved", Toast.LENGTH_SHORT).show();
-    }
-
-    private void xml_Parse() {
         InputStream inputStream=getResources().openRawResource(R.raw.testdata);
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader reader = new BufferedReader(inputStreamReader);
@@ -145,34 +131,122 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
             Integer eventType = new Integer(xmlPullParser.getEventType());
 
             Company c;
+            int step_mode = STEP_NONE;
+
+            String opnSvcId="";    //개발서비스ID  ex) "02_03_06_P" (primary key)
+            int opnSfTeamCode=0;  //개밤자치단체코드  (primary key)
+            String mgtNo="";          //관리번호 (primary key)
+            String trdStateGbn=""; //영업상태구분코드  ex) 01, 02, 03, 04
+            String siteTel="";     //소재지 전화
+            String siteWhlAddr=""; //소재지 전체주소
+            String rdnWhlAddr="";  //도로명 주소
+            String bplcNm="";      //사업장명
+            double x=0;            //x
+            double y=0;            //y
+
             //순서 ( start tag -> text -> end tag -> text )
             while(eventType != xmlPullParser.END_DOCUMENT) {
 
                 switch (eventType) {
                     case XmlPullParser.START_DOCUMENT:
-
                         break;
                     case XmlPullParser.START_TAG:
-                        //여기서 부터 작업치기
-                        switch (xmlPullParser.getName())
+                        String startTag = xmlPullParser.getName();
+                        switch (startTag)
                         {
                             case "row" :
-                                c = new Company();
+                                //객체생성
+                                break;
+                            case "opnSvcId" :
+                                step_mode = STEP_opnSvcId;
+                                break;
+                            case "opnSfTeamCode" :
+                                step_mode = STEP_opnSfTeamCode;
+                                break;
+                            case "mgtNo" :
+                                step_mode = STEP_mgtNo;
+                                break;
+                            case "trdStateGbn" :
+                                step_mode = STEP_trdStateGbn;
+                                break;
+                            case "siteTel" :
+                                step_mode = STEP_siteTel;
+                                break;
+                            case "siteWhlAddr" :
+                                step_mode = STEP_siteWhlAddr;
+                                break;
+                            case "rdnWhlAddr" :
+                                step_mode = STEP_rdnWhlAddr;
                                 break;
                             case "bplcNm" :
+                                //업체명
+                                step_mode = STEP_bplcNm;
                                 break;
                             case "x" :
+                                //x좌표
+                                step_mode = STEP_x;
                                 break;
-                            case "y":
+                            case "y" :
+                                //y좌표
+                                step_mode = STEP_y;
+                                break;
+                            default:
+                                step_mode = STEP_NONE;
                                 break;
                         }
+
                         break;
                     case XmlPullParser.END_TAG:
-                        if(xmlPullParser.getName().equals("row"));          //끝
-                            //makeMarker();
+                        String endTag = xmlPullParser.getName();
+                        if(endTag.equals("row"))
+                        {
+                            //하나의 블록이 끝남
+                            //리스트에 해당 company 등록하거나 또는 map에 띄우기
+                            if(trdStateGbn.equals("01"))     //영업 정상일 때
+                            {
+                                c = new Company(opnSvcId, opnSfTeamCode, mgtNo, trdStateGbn, siteTel, siteWhlAddr, rdnWhlAddr, bplcNm, x, y);
+                                makeMarker(c);
+                            }
+
+                        }
+                        step_mode = STEP_NONE;
+
                         break;
                     case XmlPullParser.TEXT:
-
+                        String text = xmlPullParser.getText();
+                        switch (step_mode)
+                        {
+                            case STEP_opnSvcId :
+                                opnSvcId = text;
+                                break;
+                            case STEP_opnSfTeamCode :
+                                opnSfTeamCode = Integer.parseInt(text);
+                                break;
+                            case STEP_mgtNo :
+                                mgtNo = text;
+                                break;
+                            case STEP_trdStateGbn :
+                                trdStateGbn = text;
+                                break;
+                            case STEP_siteTel :
+                                siteTel = text;
+                                break;
+                            case STEP_siteWhlAddr :
+                                siteWhlAddr = text;
+                                break;
+                            case STEP_rdnWhlAddr :
+                                rdnWhlAddr = text;
+                                break;
+                            case STEP_bplcNm :
+                                bplcNm = text;
+                                break;
+                            case STEP_x :
+                                x = Double.parseDouble(text);
+                                break;
+                            case STEP_y :
+                                y = Double.parseDouble(text);
+                                break;
+                        }
                         break;
                 }
 
@@ -207,6 +281,34 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         marker.setMapPoint(MapPoint.mapPointWithGeoCoord(gwsPt.y, gwsPt.x));      //      mapPointWithGeoCoord
         marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+
+        mapView.addPOIItem(marker);
+    }
+
+
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+        //마커 클릭 이벤트
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+        //말풍선 클릭 이벤트
+        //activity_review.xml을 띄우기
+        //넘겨줄 정보
+        //1. 선택된 업체 ID값
+
+        Intent reviewIntent = new Intent(this, ReviewActivity.class);
+        reviewIntent.putExtra("id","id");
+        startActivity(reviewIntent);
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
     }
 
     /*
@@ -290,44 +392,4 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         }
     }
     */
-    class Company
-    {
-        private String bplcNm;      //사업장명
-        private float x;            //x
-        private float y;            //y
-
-
-        public Company(){};
-
-        public Company(String bplcNm, float x, float y)
-        {
-            this.bplcNm = bplcNm;
-            this.x = x;
-            this.y = y;
-        }
-
-        public String getBplcNm() {
-            return bplcNm;
-        }
-
-        public void setBplcNm(String bplcNm) {
-            this.bplcNm = bplcNm;
-        }
-
-        public float getX() {
-            return x;
-        }
-
-        public void setX(float x) {
-            this.x = x;
-        }
-
-        public float getY() {
-            return y;
-        }
-
-        public void setY(float y) {
-            this.y = y;
-        }
-    }
 }
