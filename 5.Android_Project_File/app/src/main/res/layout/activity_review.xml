@@ -62,7 +62,8 @@
 
         <RatingBar
             android:id="@+id/ratingBar_avg"
-            android:rating=""
+            android:rating="4"
+            android:isIndicator="true"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:layout_gravity="bottom|center"
@@ -89,9 +90,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+
+                    />
             </LinearLayout>
         </ScrollView>
 
