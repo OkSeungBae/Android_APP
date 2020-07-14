@@ -70,7 +70,7 @@
             android:numStars="5"/>
 
         <EditText
-            android:id="@+id/reviewTitle"
+            android:id="@+id/reviewUser"
             android:layout_width="300dp"
             android:layout_height="38dp"
             android:layout_gravity="center_horizontal"
@@ -82,7 +82,7 @@
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/review"
+            android:id="@+id/reviewContext"
             android:layout_width="300dp"
             android:layout_height="342dp"
             android:layout_gravity="center_horizontal"

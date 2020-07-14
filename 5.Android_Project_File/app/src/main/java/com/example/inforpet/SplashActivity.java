@@ -15,7 +15,7 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(intent);
 
         try {
-            Thread.sleep(4000);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
