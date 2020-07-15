@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="110dp">
+        android:layout_height="123dp">
 
         <TextView
             android:id="@+id/name_review_write"
@@ -30,8 +30,8 @@
         <TextView
             android:id="@+id/address_review_write"
             android:layout_width="315dp"
-            android:layout_height="21dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/jua_ttf"
             android:hint="주소 : 대구광역시 동구 동내로"
             android:textColor="@android:color/secondary_text_light"
@@ -43,11 +43,10 @@
             android:id="@+id/callnum_review_write"
             android:layout_width="315dp"
             android:layout_height="21dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/jua_ttf"
             android:hint="전화번호 : 053-000-0505"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.506"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/address_review_write" />
     </androidx.constraintlayout.widget.ConstraintLayout>

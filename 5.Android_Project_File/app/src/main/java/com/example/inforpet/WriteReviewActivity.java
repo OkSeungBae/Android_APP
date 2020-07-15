@@ -70,9 +70,6 @@ public class WriteReviewActivity extends AppCompatActivity {
         address_reivew_write.setText("주소 : " + rdnWhlAddr);
         callnum_review_write.setText("전화번호 : " + siteTel);
 
-        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        stars.getDrawable(2).setColorFilter(Color.MAGENTA, PorterDuff.Mode.SRC_ATOP);
-
         dbManager = new DBManager();
 
         Button button = findViewById(R.id.button_update);
