@@ -15,8 +15,8 @@ import android.widget.TextView;
 public class ReviewActivity extends AppCompatActivity {
 
     TextView name, address, call;
-    RatingBar ratingBar;
     float rating_avg;
+    RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +25,10 @@ public class ReviewActivity extends AppCompatActivity {
 
         ratingBar = findViewById(R.id.ratingBar_reput);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        stars.getDrawable(2).setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP);
+        stars.getDrawable(2).setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
 
-        rating_avg = 4; //DB에 있는 rating 정보의 평균값을 가져옴
+        rating_avg = 4;
+        ratingBar.setRating(rating_avg); //DB에 있는 rating 정보의 평균값을 가져옴
 
         Button button = findViewById(R.id.button_review);
         button.setOnClickListener(new View.OnClickListener() {

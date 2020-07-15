@@ -2,6 +2,7 @@ package com.example.inforpet;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -94,6 +95,8 @@ public class DBManager extends AppCompatActivity {
                 + "('"+ id_company +"', '"+ date +"', '"+ user +"', '"+ rating +"', '"+ context +"')";
         database.execSQL(query);
 
+        Toast.makeText(getApplicationContext(), "테이블 삽입 : "+id_company+", "+date+", "+user+", "+rating+", "+context , Toast.LENGTH_LONG).show();
+
     }
 
     public void deleteCompanyTable(int id)
@@ -125,17 +128,56 @@ public class DBManager extends AppCompatActivity {
                 cursor.moveToNext();
 
                 int id = cursor.getInt(0);
-                String name = cursor.getString(1);
-                int age = cursor.getInt(2);
-                String mobile = cursor.getString(3);
-
-
+                String business_state = cursor.getString(1);
+                String business_category = cursor.getString(2);
+                String tel = cursor.getString(3);
+                String address = cursor.getString(4);
+                String road_name_address = cursor.getString(5);
+                String business_name = cursor.getString(6);
+                double x = cursor.getDouble(7);
+                double y = cursor.getDouble(8);
 
             }
             cursor.close();
         }
         catch (Exception e)
         {e.printStackTrace();}
+    }
+
+    public void selectReviewTableAll() {
+
+        String tableName = "reviewTable";
+        String query = "select id, id_company, date, rate, user, content from "+ tableName;
+
+        if(database == null) {
+            return;
+        }
+
+        if(tableName == null) {
+            return;
+        }
+
+        try {
+            Cursor cursor = database.rawQuery(query,null);
+            for(int i = 0; i<cursor.getColumnCount(); i++) {
+                cursor.moveToNext();
+
+                int id = cursor.getInt(0);
+                int id_company = cursor.getInt(1);
+                String date = cursor.getString(2);
+                String rate = cursor.getString(3);
+                String user = cursor.getString(4);
+                String context = cursor.getString(5);
+
+                Toast.makeText(getApplicationContext(), "테이블 SelectAll : " +id_company+", "+date+", "+user+", "+rate+", "+context , Toast.LENGTH_LONG).show();
+
+            }
+            cursor.close();
+        }
+        catch (Exception e)
+        {e.printStackTrace();}
+
+
     }
 
 

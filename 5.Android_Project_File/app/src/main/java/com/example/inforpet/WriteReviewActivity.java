@@ -22,7 +22,7 @@ public class WriteReviewActivity extends AppCompatActivity {
     RatingBar ratingBar;
     TextView review_context, review_user;
     DBManager dbManager;
-    String id_company;
+    String id_company = "04";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,9 @@ public class WriteReviewActivity extends AppCompatActivity {
         review_user = findViewById(R.id.reviewUser);
         review_context = findViewById(R.id.reviewContext);
         ratingBar = findViewById(R.id.ratingBar_review);
+
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        stars.getDrawable(2).setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_ATOP);
+        stars.getDrawable(2).setColorFilter(Color.MAGENTA, PorterDuff.Mode.SRC_ATOP);
 
         Button button = findViewById(R.id.button_update);
         button.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +47,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                 String context = review_context.getText().toString();
 
                 dbManager.insertReviewTable( id_company, Date(), user, rating, context);
-
+                dbManager.selectReviewTableAll();
                 finish();
             }
         });
