@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result>
+<body>
+<rows>
+<row>
+<rowNum>1</rowNum>
+<opnSvcNm>동물장묘업</opnSvcNm>
+<opnSvcId>02_03_05_P</opnSvcId>
+<opnSfTeamCode>3470000</opnSfTeamCode>
+<mgtNo>347000003820140001</mgtNo>
+<apvPermYmd>20140326</apvPermYmd>
+<apvCancelYmd></apvCancelYmd>
+<trdStateGbn>01</trdStateGbn>
+<trdStateNm>영업/정상</trdStateNm>
+<dtlStateGbn>0000</dtlStateGbn>
+<dtlStateNm>정상</dtlStateNm>
+<dcbYmd></dcbYmd>
+<clgStdt></clgStdt>
+<clgEnddt></clgEnddt>
+<ropnYmd></ropnYmd>
+<siteTel>053-593-4900</siteTel>
+<siteArea>0</siteArea>
+<sitePostNo></sitePostNo>
+<siteWhlAddr>대구광역시 달서구 장동 50번지</siteWhlAddr>
+<rdnWhlAddr>대구광역시 달서구 문화회관9길 71 (장동)</rdnWhlAddr>
+<rdnPostNo>42699</rdnPostNo>
+<bplcNm>(주)동물사랑 대구러브펫</bplcNm>
+<lastModTs>20170529204600</lastModTs>
+<updateGbn>I</updateGbn>
+<updateDt>2018-08-31 23:59:59.0</updateDt>
+<uptaeNm></uptaeNm>
+<x>337301.023312</x>
+<y>260863.131625</y>
+<lindJobGbnNm>동물장묘업</lindJobGbnNm>
+<lindPrcbGbnNm></lindPrcbGbnNm>
+<lindSeqNo></lindSeqNo>
+<rgtMbdSno>000</rgtMbdSno>
+<totEpNum></totEpNum>
+</row>
+</rows>
+</body>
+</result>

@@ -82,10 +82,12 @@ public class DBManager extends AppCompatActivity {
         String tableName = "reviewTable";
 
         if(database == null) {
+            Toast.makeText(this, "database == null", Toast.LENGTH_LONG).show();
             return;
         }
 
         if(tableName == null) {
+            Toast.makeText(this, "tableName == null", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -95,7 +97,7 @@ public class DBManager extends AppCompatActivity {
                 + "('"+ id_company +"', '"+ date +"', '"+ user +"', '"+ rating +"', '"+ context +"')";
         database.execSQL(query);
 
-        Toast.makeText(getApplicationContext(), "테이블 삽입 : "+id_company+", "+date+", "+user+", "+rating+", "+context , Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "테이블 삽입 : "+id_company+", "+date+", "+user+", "+rating+", "+context , Toast.LENGTH_LONG).show();
 
     }
 

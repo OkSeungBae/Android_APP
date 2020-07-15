@@ -29,23 +29,45 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnTest"
+        android:id="@+id/btnPet01"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="메뉴닫기" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="test" />
+        android:text="동물 병원" />
 
     <Button
-        android:id="@+id/btnTest2"
+        android:id="@+id/btnPet02"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:gravity="center"
-        android:text="메뉴 닫기2" />
+        android:text="동물 약국" />
+
+    <Button
+        android:id="@+id/btnPet03"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="동물용 의료용구 판매업" />
+
+    <Button
+        android:id="@+id/btnPet04"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="동물용 의약품 도매상" />
+
+    <Button
+        android:id="@+id/btnPet05"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="동물장묘업" />
+
+    <Button
+        android:id="@+id/btnPet06"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="동물 판매업" />
+
 </LinearLayout>

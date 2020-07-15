@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
     //test
     Button btnOpenNavi;
 
-    Button btnTest;
+    //네비게이션 버튼
+    Button btnPet[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,14 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         drawerView = findViewById(R.id.drawer);
 
         btnOpenNavi = findViewById(R.id.btnNavi);
-        btnTest = drawerView.findViewById(R.id.btnTest);
+        btnPet = new Button[6];
+        btnPet[0] = drawerView.findViewById(R.id.btnPet01);
+        btnPet[1] = drawerView.findViewById(R.id.btnPet02);
+        btnPet[2] = drawerView.findViewById(R.id.btnPet03);
+        btnPet[3] = drawerView.findViewById(R.id.btnPet04);
+        btnPet[4] = drawerView.findViewById(R.id.btnPet05);
+        btnPet[5] = drawerView.findViewById(R.id.btnPet06);
+
 
         btnOpenNavi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,25 +88,53 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
             }
         });
 
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "btnTest Call", Toast.LENGTH_SHORT).show();
-            }
-        });
+        //네이게이션의 버튼 리스너 등록
+        for(int i=0; i<6; i++)
+        {
+            setNaviButtonListener(i);
+        }
+
         //리스너 등록 ( 네이게이션 )
         drawerLayout.setDrawerListener(listener);
 
 
         initMap();
 
-        //xml콜 코드
-        //xmlCall(R.raw.testdata);
         mapView.setPOIItemEventListener(this);
-
-
     }
 
+    private void setNaviButtonListener(int index)
+    {
+        final int i = index;
+        btnPet[index].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mapView.removeAllPOIItems();
+                switch (i)
+                {
+                    case 0:
+                        xmlCall(R.raw.data0);
+                        break;
+                    case 1:
+                        xmlCall(R.raw.data1);
+                        break;
+                    case 2:
+                        xmlCall(R.raw.data2);
+                        break;
+                    case 3:
+                        xmlCall(R.raw.data3);
+                        break;
+                    case 4:
+                        xmlCall(R.raw.data4);
+                        break;
+                    case 5:
+                        xmlCall(R.raw.data5);
+                        break;
+                }
+                drawerLayout.closeDrawer(drawerView);
+            }
+        });
+    }
     //DrawerLayout리스너
     DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
         @Override

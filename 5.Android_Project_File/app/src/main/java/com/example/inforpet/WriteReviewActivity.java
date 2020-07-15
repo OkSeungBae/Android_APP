@@ -36,6 +36,8 @@ public class WriteReviewActivity extends AppCompatActivity {
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.MAGENTA, PorterDuff.Mode.SRC_ATOP);
 
+        dbManager = new DBManager();
+
         Button button = findViewById(R.id.button_update);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
