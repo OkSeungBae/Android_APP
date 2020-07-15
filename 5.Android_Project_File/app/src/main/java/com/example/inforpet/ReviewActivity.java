@@ -66,7 +66,7 @@ public class ReviewActivity extends AppCompatActivity {
         //review table만들기
         dbManager.createReviewTable(database);
 
-        scrollView = findViewById(R.id.scrollView_reivew);
+        scrollView = findViewById(R.id.ScrollView_reivew);
         name = findViewById(R.id.name_review);
         address = findViewById(R.id.address_review);
         call = findViewById(R.id.callnum_review);
@@ -79,15 +79,15 @@ public class ReviewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         name.setText(bplcNm);
-        address.setText(rdnWhlAddr);
-        call.setText(siteTel);
+        address.setText("주소 : " + rdnWhlAddr);
+        call.setText("전화번호 : " + siteTel);
 
 
         ratingBar = findViewById(R.id.ratingBar_reput);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
 
-        
+
         Button button = findViewById(R.id.button_review);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

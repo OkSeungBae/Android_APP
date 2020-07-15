@@ -67,8 +67,8 @@ public class WriteReviewActivity extends AppCompatActivity {
         siteTel = getIntent.getStringExtra("siteTel");
 
         name_reivew_write.setText(bplcNm);
-        address_reivew_write.setText(rdnWhlAddr);
-        callnum_review_write.setText(siteTel);
+        address_reivew_write.setText("주소 : " + rdnWhlAddr);
+        callnum_review_write.setText("전화번호 : " + siteTel);
 
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.MAGENTA, PorterDuff.Mode.SRC_ATOP);
