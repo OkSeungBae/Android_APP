@@ -54,7 +54,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     public void onItemClick(ReviewAdapter.ViewHolder holder, View view, int position) {
         Reviewer item;
-
+    }
+    public float getRatingAvg()
+    {
+        float ratingAvg = 0.0f;
+        for(int i=0; i<items.size(); i++)
+        {
+            ratingAvg += items.get(i).getRating();
+        }
+        return ratingAvg/items.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

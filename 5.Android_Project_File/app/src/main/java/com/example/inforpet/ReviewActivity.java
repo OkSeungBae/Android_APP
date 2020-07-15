@@ -14,12 +14,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class ReviewActivity extends AppCompatActivity {
+
+    ScrollView scrollView;
 
     ArrayList<Reviewer> reviewList;
 
@@ -63,9 +66,7 @@ public class ReviewActivity extends AppCompatActivity {
         //review table만들기
         dbManager.createReviewTable(database);
 
-        //review Table에 정보 다 받아오기
-        reviewList = dbManager.selectReviewTableAll(database, mgtNo);
-
+        scrollView = findViewById(R.id.scrollView_reivew);
         name = findViewById(R.id.name_review);
         address = findViewById(R.id.address_review);
         call = findViewById(R.id.callnum_review);
@@ -77,17 +78,6 @@ public class ReviewActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        reviewAdapter = new ReviewAdapter();
-        reviewAdapter.setItems(reviewList);
-
-        /*
-        reviewAdapter.addItem(new Reviewer("kim", 4.5f, "2020-07-15", "동물병원 좋아용"));
-        reviewAdapter.addItem(new Reviewer("park", 4.5f, "2020-07-10", "동물병원 싫어용"));
-        */
-
-
-        recyclerView.setAdapter(reviewAdapter);
-
         name.setText(bplcNm);
         address.setText(rdnWhlAddr);
         call.setText(siteTel);
@@ -97,9 +87,7 @@ public class ReviewActivity extends AppCompatActivity {
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
 
-        rating_avg = 4;
-        ratingBar.setRating(rating_avg); //DB에 있는 rating 정보의 평균값을 가져옴
-
+        
         Button button = findViewById(R.id.button_review);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +106,25 @@ public class ReviewActivity extends AppCompatActivity {
                 startActivity(writeReviewintent);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        //review Table에 정보 다 받아오기
+        reviewList = dbManager.selectReviewTableAll(database, mgtNo);
+
+        reviewAdapter = new ReviewAdapter();
+        reviewAdapter.setItems(reviewList);
+        /*
+        reviewAdapter.addItem(new Reviewer("kim", 4.5f, "2020-07-15", "동물병원 좋아용"));
+        reviewAdapter.addItem(new Reviewer("park", 4.5f, "2020-07-10", "동물병원 싫어용"));
+        */
+
+        recyclerView.setAdapter(reviewAdapter);
+
+        rating_avg = reviewAdapter.getRatingAvg();
+        ratingBar.setRating(rating_avg); //DB에 있는 rating 정보의 평균값을 가져옴
+        super.onStart();
     }
 
     private void createDatabase()
