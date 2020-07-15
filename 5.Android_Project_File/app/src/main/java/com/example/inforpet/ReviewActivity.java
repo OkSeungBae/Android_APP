@@ -3,20 +3,29 @@ package com.example.inforpet;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class ReviewActivity extends AppCompatActivity {
 
     TextView name, address, call;
+    RatingBar ratingBar;
     float rating_avg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
+
+        ratingBar = findViewById(R.id.ratingBar_reput);
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP);
 
         rating_avg = 4; //DB에 있는 rating 정보의 평균값을 가져옴
 

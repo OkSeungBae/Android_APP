@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Date;
+
 public class DBManager extends AppCompatActivity {
 
     SQLiteDatabase database;
@@ -47,16 +49,16 @@ public class DBManager extends AppCompatActivity {
         String query="create table if not exists "+ str + "("
                 + " id INTER PRIMARY KEY autoincrement, "
                 + " id_company INTERGERd"
-                + " date DATE, "
+                + " date DATE_TIME, "
                 + " rating INTERGE, "
                 + " user VARCHAR(20), "
                 + " context TEXT)";
         database.execSQL(query);
     }
 
-    public void insertCompanyTable(int id, String business_state)
+    public void insertCompanyTable(String business_state, String business_category, String tel, String address, String road_name_address, String business_name, double x, double y)//받아오는것 정확히
     {
-        String tableName = "CompayTable";
+        String tableName = "companyTable";
 
         if(database == null) {
             return;
@@ -67,16 +69,16 @@ public class DBManager extends AppCompatActivity {
         }
 
         String query="insert into " + tableName
-                + " (name, age, mobile) "
+                + " (Business_state, Business_category, Tel, Address, Road_name_address, Business_name , X, Y) "
                 + " values "
-                + "('"+ Name +"', "+ Integer.parseInt(Age) +", '"+ Mobile +"')";
+                + "('"+ business_state +"', '"+ business_category +"', '"+ tel +"', '"+ address +"', '"+ road_name_address +"', '"+ business_name +"', '"+ x +"', '"+ y +"')";
         database.execSQL(query);
 
     }
 
-    public void insertReviewTable(String user, float rating, String context)
+    public void insertReviewTable(String id_company, String date, String user, float rating, String context)
     {
-        String tableName = "ReviewTable";
+        String tableName = "reviewTable";
 
         if(database == null) {
             return;
@@ -87,27 +89,27 @@ public class DBManager extends AppCompatActivity {
         }
 
         String query="insert into " + tableName
-                + " (name, age, mobile) "
+                + " (Id_company, Date, Rating, User, Content) "
                 + " values "
-                + "('"+ Name +"', "+ Integer.parseInt(Age) +", '"+ Mobile +"')";
+                + "('"+ id_company +"', '"+ date +"', '"+ user +"', '"+ rating +"', '"+ context +"')";
         database.execSQL(query);
 
     }
 
     public void deleteCompanyTable(int id)
     {
-
+        String query = "DELETE FROM companyTable WHERE " + "id = '" + id + "'";
     }
 
     public void deleteReviewTable(int id)
     {
-
+        String query = "DELETE FROM reviewTable WHERE " + "id = '" + id + "'";
     }
 
-    public void selectAll() {
+    public void selectCompanyTableAll() {
 
-        String tableName = editText_tb.getText().toString();
-        String query = "select _id, name, age, mobile from "+ tableName;
+        String tableName = "companyTable";
+        String query = "select id, business_state, business_category, tel, address, road_name_address, business_name, x, y from "+ tableName;
 
         if(database == null) {
             return;
@@ -127,7 +129,8 @@ public class DBManager extends AppCompatActivity {
                 int age = cursor.getInt(2);
                 String mobile = cursor.getString(3);
 
-                println("레코드#"+ i +" : "+ id +", "+ name +", "+ age +", "+ mobile);
+
+
             }
             cursor.close();
         }

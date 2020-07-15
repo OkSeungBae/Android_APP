@@ -66,8 +66,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
             android:layout_marginTop="4dp"
-            android:max="5"
-            android:numStars="5"/>
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:isIndicator="false"
+            />
 
         <EditText
             android:id="@+id/reviewUser"
