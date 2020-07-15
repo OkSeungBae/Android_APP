@@ -1,23 +1,31 @@
 package com.example.inforpet;
 
+import android.app.Service;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Date;
 
-public class DBManager extends AppCompatActivity {
+public class DBManager extends Service {
 
+    final String TAG = "InforPet";
     SQLiteDatabase database;
 
     public void createDatabase(String str)
     {
         try{
             database = openOrCreateDatabase(str, MODE_PRIVATE, null);
+            Log.i(TAG, "데이터 베이스가 생성되었습니다.");
         }
         catch (Exception e) {
+            Log.i(TAG, "데이터 베이스 생성 오류 :: " + e.toString());
             e.printStackTrace();
         }
     }
@@ -25,6 +33,7 @@ public class DBManager extends AppCompatActivity {
     public void createCompanyTable(String str)
     {
         if(database == null) {
+            Log.i(TAG, "데이터 베이스가 없습니다.");
             return;
         }
 
@@ -39,22 +48,26 @@ public class DBManager extends AppCompatActivity {
                 + " x DOUBLE, "
                 + " Y DOUBLE ";
         database.execSQL(query);
+
+        Log.i(TAG, "Company 테이블이 생성되었습니다.");
     }
 
-    public void createReviewTable(String str)
+    public void createReviewTable(SQLiteDatabase database)
     {
         if(database == null) {
+            Log.i(TAG, "DBManager createReivewTable() 데이터 베이스가 없습니다.");
             return;
         }
 
-        String query="create table if not exists "+ str + "("
-                + " id INTER PRIMARY KEY autoincrement, "
-                + " id_company INTERGERd"
-                + " date DATE_TIME, "
-                + " rating INTERGE, "
+        String query="create table if not exists review ("
+                + " id INTEGER PRIMARY KEY autoincrement, "
+                + " id_company TEXT, "
+                + " date DATE, "
+                + " rating INTEGER, "
                 + " user VARCHAR(20), "
                 + " context TEXT)";
         database.execSQL(query);
+        Log.i(TAG, "DBManager createReviewTable() Review 테이블이 생성되었습니다.");
     }
 
     public void insertCompanyTable(String business_state, String business_category, String tel, String address, String road_name_address, String business_name, double x, double y)//받아오는것 정확히
@@ -77,7 +90,7 @@ public class DBManager extends AppCompatActivity {
 
     }
 
-    public void insertReviewTable(String id_company, String date, String user, float rating, String context)
+    public void insertReviewTable(SQLiteDatabase database, String id_company, String date, String user, float rating, String context)
     {
         String tableName = "reviewTable";
 
@@ -146,16 +159,18 @@ public class DBManager extends AppCompatActivity {
         {e.printStackTrace();}
     }
 
-    public void selectReviewTableAll() {
+    public void selectReviewTableAll(SQLiteDatabase database, String get_id_company) {
 
-        String tableName = "reviewTable";
-        String query = "select id, id_company, date, rate, user, content from "+ tableName;
+        String tableName = "review";
+        String query = "select id, id_company, date, rate, user, content from "+ tableName + "where id_company = " + get_id_company;
 
         if(database == null) {
+            Log.i(TAG, "DBManager selectReviewTableAll() 데이터 베이스가 없습니다.");
             return;
         }
 
         if(tableName == null) {
+            Log.i(TAG, "DBManager selectReviewTableAll() 테이블 이름이 없습니다.");
             return;
         }
 
@@ -165,14 +180,13 @@ public class DBManager extends AppCompatActivity {
                 cursor.moveToNext();
 
                 int id = cursor.getInt(0);
-                int id_company = cursor.getInt(1);
+                String id_company = cursor.getString(1);
                 String date = cursor.getString(2);
                 String rate = cursor.getString(3);
                 String user = cursor.getString(4);
                 String context = cursor.getString(5);
 
-                Toast.makeText(getApplicationContext(), "테이블 SelectAll : " +id_company+", "+date+", "+user+", "+rate+", "+context , Toast.LENGTH_LONG).show();
-
+                Log.i(TAG, "DBManager selectReviewTableAll() 데이터 받아옴 :: " + id + " " + id_company + " " + date + " " + rate + " " + user + " " + context);
             }
             cursor.close();
         }
@@ -182,6 +196,9 @@ public class DBManager extends AppCompatActivity {
 
     }
 
-
-
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 }

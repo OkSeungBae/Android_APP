@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         mapView = new MapView(this);
 
@@ -358,7 +361,8 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
 
         marker = new MapPOIItem();
         marker.setItemName(company.getBplcNm());
-        marker.setTag(0);
+        //marker에 company데이터 전송
+        marker.setUserObject(company);
         marker.setMapPoint(MapPoint.mapPointWithGeoCoord(gwsPt.y, gwsPt.x));      //      mapPointWithGeoCoord
         marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
@@ -378,9 +382,19 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         //activity_review.xml을 띄우기
         //넘겨줄 정보
         //1. 선택된 업체 ID값
+        Company getCompany = (Company)mapPOIItem.getUserObject();
 
         Intent reviewIntent = new Intent(this, ReviewActivity.class);
-        reviewIntent.putExtra("id","id");
+
+        //PK
+        reviewIntent.putExtra("opnSvcId",getCompany.getOpnSvcId());
+        reviewIntent.putExtra("opnSfTeamCode",getCompany.getOpnSfTeamCode());
+        reviewIntent.putExtra("mgtNo",getCompany.getMgtNo());
+        //PK
+
+        reviewIntent.putExtra("bplcNm",getCompany.getBplcNm());
+        reviewIntent.putExtra("rdnWhlAddr",getCompany.getRdnWhlAddr());
+        reviewIntent.putExtra("siteTel",getCompany.getSiteTel());
         startActivity(reviewIntent);
     }
 
