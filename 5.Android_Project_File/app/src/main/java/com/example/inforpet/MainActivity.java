@@ -1,28 +1,20 @@
 package com.example.inforpet;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import net.daum.android.map.coord.MapCoord;
-import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
-import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -31,12 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 
-import kr.go.localdata.client.DatasReceive;
-import kr.go.localdata.client.ReceiveLocalDatas;
 import kr.hyosang.coordinate.CoordPoint;
 import kr.hyosang.coordinate.TransCoord;
 
@@ -54,12 +41,17 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
     final int STEP_x = 9;
     final int STEP_y = 10;
 
-
-
     public static final String TAG = "InforPet";
 
+    private DrawerLayout drawerLayout;
+    private View drawerView;
+
     MapView mapView;
-    MapPOIItem marker;
+
+    //test
+    Button btnOpenNavi;
+
+    Button btnTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +60,68 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
 
         mapView = new MapView(this);
 
-        ViewGroup mapViewContainer = (ViewGroup)findViewById(R.id.map_view);
+        final ViewGroup mapViewContainer = (ViewGroup)findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
+
+        //인플레이션 ( 리소스 매칭 )
+        drawerLayout = findViewById(R.id.drawerLayout);
+        drawerView = findViewById(R.id.drawer);
+
+        btnOpenNavi = findViewById(R.id.btnNavi);
+        btnTest = drawerView.findViewById(R.id.btnTest);
+
+        btnOpenNavi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(drawerView);
+
+                /*mapView.removeAllPOIItems();
+                xmlCall(R.raw.testdata);*/
+            }
+        });
+
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "btnTest Call", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //리스너 등록 ( 네이게이션 )
+        drawerLayout.setDrawerListener(listener);
+
 
         initMap();
 
         //xml콜 코드
-        xmlCall(R.raw.testdata);
+        //xmlCall(R.raw.testdata);
         mapView.setPOIItemEventListener(this);
+
+
     }
+
+    //DrawerLayout리스너
+    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+        }
+
+        @Override
+        public void onDrawerOpened(@NonNull View drawerView) {
+
+        }
+
+        @Override
+        public void onDrawerClosed(@NonNull View drawerView) {
+
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+
+        }
+    };
+
 
     public void initMap()
     {
@@ -115,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
 
     private void xmlCall(int xmlFileId) {
 
-        InputStream inputStream=getResources().openRawResource(R.raw.testdata);
+        InputStream inputStream=getResources().openRawResource(xmlFileId);
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader reader = new BufferedReader(inputStreamReader);
 
