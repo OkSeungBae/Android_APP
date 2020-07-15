@@ -85,7 +85,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                 float rating = ratingBar.getRating();
                 String context = review_context.getText().toString();
 
-                dbManager.insertReviewTable( database, id_company, Date(), user, rating, context);
+                dbManager.insertReviewTable( database, mgtNo, Date(), user, rating, context);
                 //dbManager.selectReviewTableAll();
                 finish();
             }
@@ -93,13 +93,13 @@ public class WriteReviewActivity extends AppCompatActivity {
     }
 
     public String Date() {
-        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.KOREA);
-        Calendar calendar = Calendar.getInstance(Locale.KOREA);
-        String date = dateFormat.format(calendar.getTime());
+//        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.KOREA);
+//        Calendar calendar = Calendar.getInstance(Locale.KOREA);
+//        String date = dateFormat.format(calendar.getTime());
 
-//        SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
-//        Date currentTime = new Date ( );
-//        String date = formatter.format ( currentTime );
+        SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss", Locale.KOREA );
+        Date currentTime = new Date ( );
+        String date = formatter.format ( currentTime );
 
         return date;
     }

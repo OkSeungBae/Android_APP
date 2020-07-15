@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class DBManager extends Service {
@@ -62,8 +63,8 @@ public class DBManager extends Service {
         String query="create table if not exists review ("
                 + " id INTEGER PRIMARY KEY autoincrement, "
                 + " id_company TEXT, "
-                + " date DATE, "
-                + " rating INTEGER, "
+                + " date DATE_TIME, "
+                + " rating FLOAT, "
                 + " user VARCHAR(20), "
                 + " context TEXT)";
         database.execSQL(query);
@@ -92,25 +93,25 @@ public class DBManager extends Service {
 
     public void insertReviewTable(SQLiteDatabase database, String id_company, String date, String user, float rating, String context)
     {
-        String tableName = "reviewTable";
+        String tableName = "review";
 
         if(database == null) {
-            Toast.makeText(this, "database == null", Toast.LENGTH_LONG).show();
+            Log.i(TAG, "DBManager insertReivewTable() 데이터베이스가 없습니다.");
             return;
         }
 
         if(tableName == null) {
-            Toast.makeText(this, "tableName == null", Toast.LENGTH_LONG).show();
+            Log.i(TAG, "DBManager insertReivewTable() 테이블이 없습니다.");
             return;
         }
 
         String query="insert into " + tableName
-                + " (Id_company, Date, Rating, User, Content) "
+                + " (id_company, Date, Rating, User, Context) "
                 + " values "
-                + "('"+ id_company +"', '"+ date +"', '"+ user +"', '"+ rating +"', '"+ context +"')";
+                + "('"+ id_company +"', '"+ date +"', "+ rating +", '"+ user +"', '"+ context +"')";
         database.execSQL(query);
 
-        Toast.makeText(this, "테이블 삽입 : "+id_company+", "+date+", "+user+", "+rating+", "+context , Toast.LENGTH_LONG).show();
+        Log.i(TAG, "DBManager insertReivewTable() record insert완료");
 
     }
 
@@ -159,19 +160,21 @@ public class DBManager extends Service {
         {e.printStackTrace();}
     }
 
-    public void selectReviewTableAll(SQLiteDatabase database, String get_id_company) {
+    public ArrayList<Reviewer> selectReviewTableAll(SQLiteDatabase database, String get_id_company) {
+
+        ArrayList<Reviewer> reviews = new ArrayList<Reviewer>();
 
         String tableName = "review";
-        String query = "select id, id_company, date, rate, user, content from "+ tableName + "where id_company = " + get_id_company;
+        String query = "select id, id_company, date, rating, user, context from "+ tableName + " where id_company = '" + get_id_company + "'";
 
         if(database == null) {
             Log.i(TAG, "DBManager selectReviewTableAll() 데이터 베이스가 없습니다.");
-            return;
+            return null;
         }
 
         if(tableName == null) {
             Log.i(TAG, "DBManager selectReviewTableAll() 테이블 이름이 없습니다.");
-            return;
+            return null;
         }
 
         try {
@@ -186,14 +189,18 @@ public class DBManager extends Service {
                 String user = cursor.getString(4);
                 String context = cursor.getString(5);
 
+                Reviewer tempReview = new Reviewer(user, Float.parseFloat(rate), date, context);
+                reviews.add(tempReview);
                 Log.i(TAG, "DBManager selectReviewTableAll() 데이터 받아옴 :: " + id + " " + id_company + " " + date + " " + rate + " " + user + " " + context);
             }
             cursor.close();
         }
         catch (Exception e)
-        {e.printStackTrace();}
-
-
+        {
+            Log.i(TAG, "DBManager selectReviewTableAll() 데이터 받아오지 못함 " + e.toString());
+            e.printStackTrace();
+        }
+        return reviews;
     }
 
     @Nullable
