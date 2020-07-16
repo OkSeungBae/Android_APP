@@ -10,6 +10,6 @@
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="wrap_content"
-        android:layout_height="440dp"
-        android:src="@drawable/recommand1" />
+        android:layout_height="match_parent"
+        android:src="@drawable/ad_s" />
 </FrameLayout>
