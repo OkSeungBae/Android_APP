@@ -10,11 +10,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -25,11 +30,33 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Map;
 
 import kr.hyosang.coordinate.CoordPoint;
 import kr.hyosang.coordinate.TransCoord;
 
 public class MainActivity extends AppCompatActivity implements MapView.POIItemEventListener {
+
+    private int searchMode;
+
+    final int SEARCH_BPLCM = 21;
+    final int SEARCH_RDADD = 22;
+    final int SEARCH_WHLADD= 23;
+
+    private Spinner spinner;
+
+    private int mapMode;
+
+    final int MAP_00 = 100;
+    final int MAP_01 = 11;
+    final int MAP_02 = 12;
+    final int MAP_03 = 13;
+    final int MAP_04 = 14;
+    final int MAP_05 = 15;
+    final int MAP_06 = 16;
+
+    private MapPOIItem[][] mapModeMarekr;
 
     final int STEP_NONE = 0;
     final int STEP_opnSvcId = 1;
@@ -47,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
 
     private DrawerLayout drawerLayout;
     private View drawerView;
+    private SearchView searchView;
 
     MapView mapView;
 
@@ -61,8 +89,9 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         mapView = new MapView(this);
+        mapMode = MAP_00;
+        mapModeMarekr = new MapPOIItem[6][];
 
         final ViewGroup mapViewContainer = (ViewGroup)findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
@@ -70,6 +99,137 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         //인플레이션 ( 리소스 매칭 )
         drawerLayout = findViewById(R.id.drawerLayout);
         drawerView = findViewById(R.id.drawer);
+        searchView = findViewById(R.id.searchView);
+        spinner = findViewById(R.id.spinnder);
+
+        ArrayList<String> spinnerItem = new ArrayList<String>();
+        spinnerItem.add("업체명");
+        spinnerItem.add("도로명주소");
+        spinnerItem.add("주소");
+
+        spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerItem));
+        searchMode = SEARCH_BPLCM;
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i)
+                {
+                    case 0:
+                        searchMode = SEARCH_BPLCM;
+                        break;
+                    case 1:
+                        searchMode = SEARCH_RDADD;
+                        break;
+                    case 2:
+                        searchMode = SEARCH_WHLADD;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //입력받은 문자열 처리
+                MapPOIItem[] markers = null;
+                switch (mapMode)
+                {
+                    case MAP_00:
+                        Toast.makeText(MainActivity.this, "카달로그를 선택하세요", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case MAP_01:
+                        if(mapModeMarekr[0] == null)
+                        {
+                            //mapModeMarekr[0] = new MapPOIItem[mapView.getPOIItems().length];
+                            mapModeMarekr[0] = mapView.getPOIItems();
+                        }
+                        markers = mapModeMarekr[0];
+                        break;
+                    case MAP_02:
+                        if(mapModeMarekr[1] == null)
+                        {
+                            mapModeMarekr[1] = mapView.getPOIItems();
+                        }
+                        markers = mapModeMarekr[1];
+                        break;
+                    case MAP_03:
+                        if(mapModeMarekr[2] == null)
+                        {
+                            mapModeMarekr[2] = mapView.getPOIItems();
+                        }
+                        markers = mapModeMarekr[2];
+                        break;
+                    case MAP_04:
+                        if(mapModeMarekr[3] == null)
+                        {
+                            mapModeMarekr[3] = mapView.getPOIItems();
+                        }
+                        markers = mapModeMarekr[3];
+                        break;
+                    case MAP_05:
+                        if(mapModeMarekr[4] == null)
+                        {
+                            mapModeMarekr[4] = mapView.getPOIItems();
+                        }
+                        markers = mapModeMarekr[4];
+                        break;
+                    case MAP_06:
+                        if(mapModeMarekr[5] == null)
+                        {
+                            mapModeMarekr[5] = mapView.getPOIItems();
+                        }
+                        markers = mapModeMarekr[5];
+                        break;
+                }
+
+                mapView.removeAllPOIItems();
+                boolean isSearch = false;
+                for(int i=0; i<markers.length; i++)
+                {
+                    Company c = (Company)markers[i].getUserObject();
+                    switch (searchMode)
+                    {
+                        case SEARCH_BPLCM:
+                            if(c.getBplcNm().contains(s))
+                            {
+                                mapView.addPOIItem(markers[i]);
+                                isSearch = true;
+                            }
+                            break;
+                        case SEARCH_RDADD:
+                            if(c.getRdnWhlAddr().contains(s))
+                            {
+                                mapView.addPOIItem(markers[i]);
+                                isSearch = true;
+                            }
+                            break;
+                        case SEARCH_WHLADD:
+                            if(c.getSiteWhlAddr().contains(s))
+                            {
+                                mapView.addPOIItem(markers[i]);
+                                isSearch = true;
+                            }
+                            break;
+                    }
+                }
+                if(!isSearch)
+                    Toast.makeText(MainActivity.this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                //입력란에 문자열이 바뀔 때 처리
+                return false;
+            }
+        });
 
         btnOpenNavi = findViewById(R.id.btnNavi);
         btnPet = new Button[6];
@@ -116,21 +276,27 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
                 switch (i)
                 {
                     case 0:
+                        mapMode = MAP_01;
                         xmlCall(R.raw.data0);
                         break;
                     case 1:
+                        mapMode = MAP_02;
                         xmlCall(R.raw.data1);
                         break;
                     case 2:
+                        mapMode = MAP_03;
                         xmlCall(R.raw.data2);
                         break;
                     case 3:
+                        mapMode = MAP_04;
                         xmlCall(R.raw.data3);
                         break;
                     case 4:
+                        mapMode = MAP_05;
                         xmlCall(R.raw.data4);
                         break;
                     case 5:
+                        mapMode = MAP_06;
                         xmlCall(R.raw.data5);
                         break;
                 }
@@ -278,7 +444,6 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
                                 step_mode = STEP_NONE;
                                 break;
                         }
-
                         break;
                     case XmlPullParser.END_TAG:
                         String endTag = xmlPullParser.getName();

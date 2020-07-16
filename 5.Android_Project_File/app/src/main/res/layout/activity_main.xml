@@ -28,14 +28,34 @@
                 android:layout_height="34dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="14dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="21dp"
-                android:layout_marginEnd="302dp"
                 android:layout_marginBottom="595dp"
                 android:background="@drawable/nevigation_btn" />
+
         </RelativeLayout>
+
+        <Spinner
+            android:id="@+id/spinnder"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="21dp"
+            android:background="@drawable/search_view_border"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/search_view_border"
+            app:layout_constraintStart_toEndOf="@+id/spinnder"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include layout="@layout/activity_drawer" />
