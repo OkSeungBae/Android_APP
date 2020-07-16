@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
 
     //네비게이션 버튼
     Button btnPet[];
+    Button recommandBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,6 +241,15 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         btnPet[4] = drawerView.findViewById(R.id.btnPet05);
         btnPet[5] = drawerView.findViewById(R.id.btnPet06);
 
+        recommandBtn = drawerView.findViewById(R.id.recommandBtn_main);
+
+        recommandBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent recommandIntent = new Intent(getApplicationContext(), RecommandActivity.class);
+                startActivity(recommandIntent);
+            }
+        });
 
         btnOpenNavi.setOnClickListener(new View.OnClickListener() {
             @Override

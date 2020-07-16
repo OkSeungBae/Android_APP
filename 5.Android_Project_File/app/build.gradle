@@ -31,6 +31,8 @@ dependencies {
     implementation files('libs/TransCoord.jar')
     implementation files('libs/localdataApiClient_v3.jar')
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     compile files ('libs/libDaumMapAndroid.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
