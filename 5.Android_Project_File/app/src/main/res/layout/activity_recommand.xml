@@ -42,7 +42,7 @@
             android:id="@+id/viewPager_recommand"
             android:layout_width="match_parent"
             android:layout_height="480dp"
-            android:background="#FFFFFF"
+            android:background="@drawable/review_layout_back"
             android:fillViewport="true">
 
 
