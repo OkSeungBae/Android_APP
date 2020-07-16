@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(35.877266, 128.735755), true);
 
         //줌 레벨 변경
-        mapView.setZoomLevel(6, true);
+        mapView.setZoomLevel(3, true);
     }
     /*
     //카카오 지도 위 MapPOIItem에 커스텀 말풍선 interface를 implement받은 class이다.
